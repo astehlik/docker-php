@@ -1,5 +1,4 @@
-FROM
-{{ baseImage }}
+FROM {{ baseImage }}
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV LANG C.UTF-8
@@ -22,9 +21,9 @@ RUN apt-get update \
         php{{ phpVersion }}-imap \
         php{{ phpVersion }}-intl \
 {% if phpVersion < "8.0" %}
-	php{{ phpVersion }}-json \
+        php{{ phpVersion }}-json \
 {% endif %}
-php{{ phpVersion }}-ldap \
+        php{{ phpVersion }}-ldap \
         php{{ phpVersion }}-mbstring \
         php{{ phpVersion }}-mcrypt \
         php{{ phpVersion }}-mysql \

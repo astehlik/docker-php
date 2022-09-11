@@ -50,7 +50,6 @@ RUN apt-get update \
         language-pack-de \
         zip \
         unzip \
-    && apt-get purge -y gnupg \
     && apt-get --purge -y autoremove \
     && apt-get autoclean \
     && apt-get clean \

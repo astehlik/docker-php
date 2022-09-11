@@ -14,10 +14,17 @@ RUN apt-get update \
     && echo "deb [signed-by=/usr/share/keyrings/ondrej.gpg] https://ppa.launchpadcontent.net/ondrej/php/ubuntu $DISTRIB_CODENAME main " | tee /etc/apt/sources.list.d/ondrej.list \
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
-        php{{ phpVersion }}-apc \
+{% if phpVersion < "8.2" %}
+        php{{ phpVersion }}-apcu \
+{% endif %}
+{% if phpVersion >= "7.0" and phpVersion < "8.0" %}
+        php{{ phpVersion }}-apcu-bc \
+{% endif %}
         php{{ phpVersion }}-curl \
         php{{ phpVersion }}-gd \
+{% if phpVersion < "8.2" %}
         php{{ phpVersion }}-igbinary \
+{% endif %}
         php{{ phpVersion }}-imap \
         php{{ phpVersion }}-intl \
 {% if phpVersion < "8.0" %}
@@ -25,12 +32,16 @@ RUN apt-get update \
 {% endif %}
         php{{ phpVersion }}-ldap \
         php{{ phpVersion }}-mbstring \
+{% if phpVersion < "8.2" %}
         php{{ phpVersion }}-mcrypt \
+{% endif %}
         php{{ phpVersion }}-mysql \
         php{{ phpVersion }}-pgsql \
         php{{ phpVersion }}-soap \
         php{{ phpVersion }}-sqlite3 \
+{% if phpVersion < "8.2" %}
         php{{ phpVersion }}-xdebug \
+{% endif %}
         php{{ phpVersion }}-phpdbg \
         php{{ phpVersion }}-xml \
         php{{ phpVersion }}-zip \

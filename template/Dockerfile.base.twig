@@ -1,0 +1,47 @@
+FROM
+{{ baseImage }}
+
+ENV DEBIAN_FRONTEND noninteractive
+ENV LANG C.UTF-8
+
+RUN apt-get update \
+    && apt-get dist-upgrade -y \
+    && apt-get install -y curl gnupg \
+    && mkdir -p /usr/share/keyrings \
+    && gpg --receive-keys --keyserver hkps://keyserver.ubuntu.com --recv-keys 4f4ea0aae5267a6c \
+    && gpg -a --export 4f4ea0aae5267a6c | gpg --dearmor > /usr/share/keyrings/ondrej.gpg \
+    && rm -Rf /root/.gnupg \
+    && . /etc/lsb-release \
+    && echo "deb [signed-by=/usr/share/keyrings/ondrej.gpg] https://ppa.launchpadcontent.net/ondrej/php/ubuntu $DISTRIB_CODENAME main " | tee /etc/apt/sources.list.d/ondrej.list \
+    && apt-get update -y \
+    && apt-get install -y --no-install-recommends \
+        php{{ phpVersion }}-apc \
+        php{{ phpVersion }}-curl \
+        php{{ phpVersion }}-gd \
+        php{{ phpVersion }}-igbinary \
+        php{{ phpVersion }}-imap \
+        php{{ phpVersion }}-intl \
+{% if phpVersion < "8.0" %}
+	php{{ phpVersion }}-json \
+{% endif %}
+php{{ phpVersion }}-ldap \
+        php{{ phpVersion }}-mbstring \
+        php{{ phpVersion }}-mcrypt \
+        php{{ phpVersion }}-mysql \
+        php{{ phpVersion }}-pgsql \
+        php{{ phpVersion }}-soap \
+        php{{ phpVersion }}-sqlite3 \
+        php{{ phpVersion }}-xdebug \
+        php{{ phpVersion }}-phpdbg \
+        php{{ phpVersion }}-xml \
+        php{{ phpVersion }}-zip \
+    && apt-get install -y \
+        imagemagick \
+        language-pack-de \
+        zip \
+        unzip \
+    && apt-get purge -y gnupg \
+    && apt-get --purge -y autoremove \
+    && apt-get autoclean \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*

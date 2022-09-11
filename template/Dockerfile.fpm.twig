@@ -1,0 +1,22 @@
+FROM astehlik/php-base:{{ phpVersion }}
+
+RUN apt-get update -y \
+    && apt-get install -y --no-install-recommends \
+        php{{ phpVersion }}-fpm \
+    && apt-get --purge -y autoremove \
+    && apt-get autoclean \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Disable xdebug by default to improve performance!
+RUN phpdismod xdebug
+
+ADD fpm/pool.d/docker.conf /etc/php/{{ phpVersion }}/fpm/pool.d/docker.conf
+ADD fpm/pool.d/www.conf.template /etc/php/{{ phpVersion }}/fpm/pool.d/www.conf.template
+
+ADD fpm/entrypoint.sh /usr/sbin/docker-php-entrypoint
+RUN chmod +x /usr/sbin/docker-php-entrypoint
+
+ENTRYPOINT ["/usr/sbin/docker-php-entrypoint"]
+
+CMD ["/usr/sbin/php-fpm{{ phpVersion }}"]

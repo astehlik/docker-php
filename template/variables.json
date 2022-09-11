@@ -1,0 +1,4 @@
+{
+    "baseImage": "ubuntu:22.04",
+    "nodeJsVersion": "16"
+}

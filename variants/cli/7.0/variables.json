@@ -1,3 +1,4 @@
 {
-    "phpVersion": "7.0"
+    "phpVersion": "7.0",
+    "composerImageTag": "2.2"
 }

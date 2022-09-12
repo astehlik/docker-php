@@ -1,4 +1,10 @@
+# syntax=docker/dockerfile:1
+
+FROM composer:{{ composerImageTag }} as composer
+
 FROM astehlik/php-base:{{ phpVersion }}
+
+COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 RUN curl -sS https://deb.nodesource.com/gpgkey/nodesource.gpg.key | gpg --dearmor > /usr/share/keyrings/nodesource.gpg \
     && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor > /usr/share/keyrings/yarn.gpg \

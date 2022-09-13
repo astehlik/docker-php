@@ -15,6 +15,7 @@ PHP_FPM_POOL_PM_MIN_SPARE_SERVERS="${PHP_FPM_POOL_PM_MIN_SPARE_SERVERS:-1}"
 PHP_FPM_POOL_PM_MAX_SPARE_SERVERS="${PHP_FPM_POOL_PM_MAX_SPARE_SERVERS:-3}"
 PHP_FPM_POOL_PM_STATUS_LISTEN="${PHP_FPM_POOL_PM_STATUS_LISTEN:-9001}"
 PHP_FPM_MAX_REQUESTS="${PHP_FPM_MAX_REQUESTS:-500}"
+PHP_FPM_XDEBUG_ENABLE="${PHP_FPM_XDEBUG_ENABLE:-0}"
 
 declare -A SETTINGS_MAP=( 
         [listen]="$PHP_FPM_POOL_LISTEN"
@@ -35,7 +36,11 @@ for i in "${!SETTINGS_MAP[@]}";  do
 done
 
 if [[ -n "${PHP_FPM_MAX_REQUESTS+x}" ]]; then
-    echo "pm.max_requests = ${PHP_FPM_MAX_REQUESTS}" >> "${PHP_FPM_POOL_CONFIG}"
+        echo "pm.max_requests = ${PHP_FPM_MAX_REQUESTS}" >> "${PHP_FPM_POOL_CONFIG}"
+fi
+
+if [[ "$PHP_XDEBUG_ENABLE" -eq "1" ]]; then
+        phpenmod xdebug
 fi
 
 # first arg is `-f` or `--some-option`

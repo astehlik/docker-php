@@ -477,5 +477,8 @@ clear_env = no
 
 ; Ensure worker stdout and stderr are sent to the main error log.
 catch_workers_output = yes
-decorate_workers_output = no
 {% endverbatim %}
+
+{% if phpVersion >= "7.3" %}
+decorate_workers_output = no
+{% endif %}

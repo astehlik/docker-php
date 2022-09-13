@@ -43,6 +43,26 @@ if [[ "$PHP_XDEBUG_ENABLE" -eq "1" ]]; then
         phpenmod xdebug
 fi
 
+if [[ -n "${PHP_FPM_POOL_UID+x}" ]]; then
+        usermod -u "${PHP_FPM_POOL_UID}" www-data
+fi
+
+if [[ -n "${PHP_FPM_POOL_GID+x}" ]]; then
+        groupmod -g "${PHP_FPM_POOL_GID}" www-data
+fi
+
+if [[ -n "${PHP_ENABLE_MODS+x}" ]]; then
+        for mod in ${PHP_ENABLE_MODS}; do
+                phpenmod "$mod"
+        done
+fi
+
+if [[ -n "${PHP_DISABLE_MODS+x}" ]]; then
+        for mod in ${PHP_DISABLE_MODS}; do
+                phpdismod "$mod"
+        done
+fi
+
 # first arg is `-f` or `--some-option`
 if [ "${1#-}" != "$1" ]; then
         set -- php-fpm "$@"

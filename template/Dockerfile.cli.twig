@@ -23,6 +23,7 @@ RUN curl -sS https://deb.nodesource.com/gpgkey/nodesource.gpg.key | gpg --dearmo
         parallel \
         wget \
         git \
+        sudo \
     && apt-get --purge -y autoremove \
     && apt-get autoclean \
     && apt-get clean \
@@ -33,6 +34,9 @@ RUN update-alternatives --set php /usr/bin/php{{ phpVersion }}
 
 ADD cli/entrypoint.sh /usr/local/bin/docker-php-entrypoint
 RUN chmod +x /usr/local/bin/docker-php-entrypoint
+
+RUN groupadd -g 1099 localuser \
+    && useradd -u 1099 -g localuser -m localuser -s /bin/bash
 
 ENTRYPOINT ["/usr/local/bin/docker-php-entrypoint"]
 

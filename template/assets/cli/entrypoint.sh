@@ -9,6 +9,14 @@ if [ "$PHP_XDEBUG_ENABLE" -eq "1" ]; then
         phpenmod xdebug
 fi
 
+if [ -n "${PHP_LOCALUSER_UID+x}" ]; then
+        sudo usermod -u "${PHP_LOCALUSER_UID}" localuser
+fi
+
+if [ -n "${PHP_LOCALUSER_GID+x}" ]; then
+        sudo groupmod -g "${PHP_LOCALUSER_GID}" localuser
+fi
+
 if [ "$PHP_DOWNGRADE_COMPOSER" -eq "1" ]; then
         composer self-update --1
 fi
@@ -18,4 +26,8 @@ if [ "${1#-}" != "$1" ]; then
         set -- php "$@"
 fi
 
-exec "$@"
+if [ -n "${PHP_LOCALUSER_UID+x}" ]; then
+        exec sudo --preserve-env -H -u localuser "$@"
+else
+        exec "$@"
+fi

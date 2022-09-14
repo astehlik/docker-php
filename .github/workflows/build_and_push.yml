@@ -58,7 +58,7 @@ jobs:
           context: dist/images/fpm/${{ matrix.version }}
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: astehlik/php-fpm:${{ matrix.version }},astehlik/localdev-php-fpm:${{ matrix.version }}
+          tags: astehlik/php-fpm:${{ matrix.version }},astehlik/localdev-php-fpm:${{ matrix.version }}-ubuntu
       - name: Build and push cli
         uses: docker/build-push-action@v3
         with:

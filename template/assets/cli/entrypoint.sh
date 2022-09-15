@@ -17,20 +17,20 @@ fi
 
 if [ -n "${PHP_LOCALUSER_UID+x}" ]; then
         debug "Adjusting uid of localuser if user with uid ${PHP_LOCALUSER_UID} does not exist..."
-        id "${PHP_LOCALUSER_UID}" > /dev/null 2>&1 || sudo usermod -u "${PHP_LOCALUSER_UID}" localuser
+        id "${PHP_LOCALUSER_UID}" > /dev/null 2>&1 || usermod -u "${PHP_LOCALUSER_UID}" localuser
 fi
 
 if [ -n "${PHP_LOCALUSER_GID+x}" ]; then
-        fpmGroupData="$(getent group "${PHP_LOCALUSER_GID}" || echo '')"
-        fpmGroup="${fpmGroupData%%:*}"
-        if [ "$fpmGroup" = ""  ]; then
+        cliGroupData="$(getent group "${PHP_LOCALUSER_GID}" || echo '')"
+        cliGroup="${cliGroupData%%:*}"
+        if [ "$cliGroup" = ""  ]; then
                 debug "Adjusting gid of localuser group to ${PHP_LOCALUSER_GID}..."
-                fpmGroup="localuser"
-                sudo groupmod -g "${PHP_LOCALUSER_GID}" localuser
+                cliGroup="localuser"
+                groupmod -g "${PHP_LOCALUSER_GID}" localuser
         fi
-        fpmUser="$(id -nu "${PHP_LOCALUSER_UID}")"
-        debug "Adding user $fpmUser to group $fpmGroup"
-        usermod -g "$fpmGroup" "$fpmUser"
+        cliUser="$(id -nu "${PHP_LOCALUSER_UID}")"
+        debug "Adding user $cliUser to group $cliGroup"
+        usermod -g "$cliGroup" "$cliUser"
 fi
 
 if [ "$PHP_DOWNGRADE_COMPOSER" -eq "1" ]; then

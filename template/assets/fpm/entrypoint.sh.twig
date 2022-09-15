@@ -8,6 +8,8 @@ PHP_FPM_POOL_CONFIG="/etc/php/{{ phpVersion }}/fpm/pool.d/www.conf"
 cp "${PHP_FPM_POOL_TEMPLATE}" "${PHP_FPM_POOL_CONFIG}"
 
 PHP_FPM_POOL_LISTEN="${PHP_FPM_POOL_LISTEN:-9000}"
+PHP_FPM_POOL_USER="${PHP_FPM_POOL_USER:-www-data}"
+PHP_FPM_POOL_GROUP="${PHP_FPM_POOL_GROUP:-www-data}"
 PHP_FPM_POOL_PM="${PHP_FPM_POOL_PM:-dynamic}"
 PHP_FPM_POOL_PM_MAX_CHILDREN="${PHP_FPM_POOL_PM_MAX_CHILDREN:-5}"
 PHP_FPM_POOL_PM_START_SERVERS="${PHP_FPM_POOL_PM_START_SERVERS:-2}"
@@ -17,8 +19,36 @@ PHP_FPM_POOL_PM_STATUS_LISTEN="${PHP_FPM_POOL_PM_STATUS_LISTEN:-9001}"
 PHP_FPM_MAX_REQUESTS="${PHP_FPM_MAX_REQUESTS:-500}"
 PHP_FPM_XDEBUG_ENABLE="${PHP_FPM_XDEBUG_ENABLE:-0}"
 
+debug() {
+    if [ -n "${DEBUG_ENTRYPOINT}" ] && [ "${DEBUG_ENTRYPOINT}" -eq 1 ]; then
+        echo "$1"
+    fi
+}
+
+if [ -n "${PHP_FPM_POOL_UID+x}" ]; then
+        debug "Adjusting uid of ${PHP_FPM_POOL_USER} if user with uid ${PHP_FPM_POOL_UID} does not exist..."
+        id "${PHP_FPM_POOL_UID}" > /dev/null 2>&1 || usermod -u "${PHP_FPM_POOL_UID}" "${PHP_FPM_POOL_USER}"
+        PHP_FPM_POOL_USER="$(id -nu "${PHP_FPM_POOL_UID}")"
+fi
+
+if [ -n "${PHP_FPM_POOL_GID+x}" ]; then
+        fpmGroupData="$(getent group "${PHP_FPM_POOL_GID}" || echo '')"
+        fpmGroup="${fpmGroupData%%:*}"
+        if [ "$fpmGroup" = ""  ]; then
+                debug "Adjusting gid of ${PHP_FPM_POOL_GROUP} group to ${PHP_FPM_POOL_GID}..."
+                groupmod -g "${PHP_FPM_POOL_GID}" "${PHP_FPM_POOL_GROUP}"
+        else
+                debug "Overwriting FPM pool group with existing group ${fpmGroup}..."
+                PHP_FPM_POOL_GROUP="${fpmGroup}"
+        fi
+        debug "Adding user ${PHP_FPM_POOL_USER} to group ${PHP_FPM_POOL_GROUP}"
+        usermod -g "${PHP_FPM_POOL_GROUP}" "${PHP_FPM_POOL_USER}"
+fi
+
 declare -A SETTINGS_MAP=( 
         [listen]="$PHP_FPM_POOL_LISTEN"
+        [user]="$PHP_FPM_POOL_USER"
+        [group]="$PHP_FPM_POOL_GROUP"
         [pm]="$PHP_FPM_POOL_PM"
         [pm_max_children]="$PHP_FPM_POOL_PM_MAX_CHILDREN"
         [pm_start_servers]="$PHP_FPM_POOL_PM_START_SERVERS"
@@ -26,7 +56,6 @@ declare -A SETTINGS_MAP=(
         [pm_max_spare_servers]="$PHP_FPM_POOL_PM_MAX_SPARE_SERVERS"
         [pm_status_listen]="$PHP_FPM_POOL_PM_STATUS_LISTEN"
 )
-
 
 for i in "${!SETTINGS_MAP[@]}";  do
         search="%%$i%%"
@@ -41,14 +70,6 @@ fi
 
 if [[ "$PHP_XDEBUG_ENABLE" -eq "1" ]]; then
         phpenmod xdebug
-fi
-
-if [[ -n "${PHP_FPM_POOL_UID+x}" ]]; then
-        usermod -u "${PHP_FPM_POOL_UID}" www-data
-fi
-
-if [[ -n "${PHP_FPM_POOL_GID+x}" ]]; then
-        groupmod -g "${PHP_FPM_POOL_GID}" www-data
 fi
 
 if [[ -n "${PHP_ENABLE_MODS+x}" ]]; then

@@ -30,7 +30,7 @@ if [ -n "${PHP_LOCALUSER_GID+x}" ]; then
         fi
         cliUser="$(id -nu "${PHP_LOCALUSER_UID}")"
         debug "Adding user $cliUser to group $cliGroup"
-        usermod -g "$cliGroup" "$cliUser"
+        usermod -g "$cliGroup" "$cliUser" > /dev/null
 fi
 
 if [ "$PHP_DOWNGRADE_COMPOSER" -eq "1" ]; then

@@ -15,15 +15,17 @@ RUN curl -sS https://deb.nodesource.com/gpgkey/nodesource.gpg.key | gpg --dearmo
     && apt-get install -y --no-install-recommends \
         php{{ phpVersion }}-cli \
     && apt-get install -y \
-        openssh-client \
-        mysql-client \
-        rsync \
-        nodejs \
-        yarn \
-        parallel \
-        wget \
         git \
+        jq \
+        make \
+        mysql-client \
+        nodejs \
+        openssh-client \
+        parallel \
+        rsync \
         sudo \
+        wget \
+        yarn \
     && apt-get --purge -y autoremove \
     && apt-get autoclean \
     && apt-get clean \

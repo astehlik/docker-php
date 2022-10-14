@@ -70,10 +70,3 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: astehlik/php-cli:${{ matrix.version }}
-      - name: Build and push cli-debug
-        uses: docker/build-push-action@v3
-        with:
-          context: dist/images/cli-debug/${{ matrix.version }}
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: astehlik/php-cli:${{ matrix.version }}-debug

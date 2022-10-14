@@ -22,6 +22,17 @@
             "cli/8.1:8.1",
             "cli/8.2:8.2"
         ],
+        "cli-debug": [
+            "cli-debug/5.6:5.6",
+            "cli-debug/7.0:7.0",
+            "cli-debug/7.1:7.1",
+            "cli-debug/7.2:7.2",
+            "cli-debug/7.3:7.3",
+            "cli-debug/7.4:7.4",
+            "cli-debug/8.0:8.0",
+            "cli-debug/8.1:8.1",
+            "cli-debug/8.2:8.2"
+        ],
         "fpm": [
             "fpm/5.6:5.6",
             "fpm/7.0:7.0",

@@ -26,6 +26,7 @@ RUN curl -sS https://deb.nodesource.com/gpgkey/nodesource.gpg.key | gpg --dearmo
         sudo \
         wget \
         yarn \
+    && npm install -g npm@latest
     && apt-get --purge -y autoremove \
     && apt-get autoclean \
     && apt-get clean \

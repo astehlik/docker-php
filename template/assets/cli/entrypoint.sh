@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e
 
@@ -31,6 +31,16 @@ if [ -n "${PHP_LOCALUSER_GID+x}" ]; then
   cliUser="$(id -nu "${PHP_LOCALUSER_UID}")"
   debug "Adding user $cliUser to group $cliGroup"
   usermod -g "$cliGroup" "$cliUser" >/dev/null
+fi
+
+if [ -n "${PHP_LOCALUSER_PATHS+x}" ]; then
+  debug "Adjusting ownership of ${PHP_LOCALUSER_PATHS}..."
+
+  IFS=: read -r -a patharr <<<"$PHP_LOCALUSER_PATHS"
+
+  for dir in "${patharr[@]}"; do
+    chown "${PHP_LOCALUSER_UID-1000}":"${PHP_LOCALUSER_GID-1000}" "$dir"
+  done
 fi
 
 if [ "$PHP_DOWNGRADE_COMPOSER" -eq "1" ]; then

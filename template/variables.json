@@ -1,5 +1,5 @@
 {
     "baseImage": "ubuntu:22.04",
     "composerImageTag": "latest",
-    "nodeJsVersion": "16"
+    "nodeJsVersion": "18"
 }

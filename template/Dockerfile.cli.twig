@@ -7,10 +7,8 @@ FROM astehlik/php-base:{{ phpVersion }}
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 RUN curl -sS https://deb.nodesource.com/gpgkey/nodesource.gpg.key | gpg --dearmor > /usr/share/keyrings/nodesource.gpg \
-    && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor > /usr/share/keyrings/yarn.gpg \
     && . /etc/lsb-release \
     && echo "deb [signed-by=/usr/share/keyrings/nodesource.gpg] https://deb.nodesource.com/node_16.x jammy main" | tee /etc/apt/sources.list.d/nodesource.list \
-    && echo "deb [signed-by=/usr/share/keyrings/yarn.gpg] https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
         php{{ phpVersion }}-cli \
@@ -25,7 +23,6 @@ RUN curl -sS https://deb.nodesource.com/gpgkey/nodesource.gpg.key | gpg --dearmo
         rsync \
         sudo \
         wget \
-        yarn \
         zsh \
     && npm install -g npm@latest \
     && apt-get --purge -y autoremove \

@@ -15,33 +15,31 @@ RUN apt-get update \
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
 {% if phpVersion < "8.2" %}
-        php{{ phpVersion }}-apcu \
+	php{{ phpVersion }}-apcu \
 {% endif %}
 {% if phpVersion >= "7.0" and phpVersion < "8.0" %}
-        php{{ phpVersion }}-apcu-bc \
+	php{{ phpVersion }}-apcu-bc \
 {% endif %}
-        php{{ phpVersion }}-curl \
+php{{ phpVersion }}-curl \
         php{{ phpVersion }}-gd \
 {% if phpVersion < "8.2" %}
-        php{{ phpVersion }}-igbinary \
+	php{{ phpVersion }}-igbinary \
 {% endif %}
-        php{{ phpVersion }}-imap \
+php{{ phpVersion }}-imap \
         php{{ phpVersion }}-intl \
 {% if phpVersion < "8.0" %}
-        php{{ phpVersion }}-json \
+	php{{ phpVersion }}-json \
 {% endif %}
-        php{{ phpVersion }}-ldap \
+php{{ phpVersion }}-ldap \
         php{{ phpVersion }}-mbstring \
 {% if phpVersion < "8.2" %}
-        php{{ phpVersion }}-mcrypt \
+	php{{ phpVersion }}-mcrypt \
 {% endif %}
-        php{{ phpVersion }}-mysql \
+php{{ phpVersion }}-mysql \
         php{{ phpVersion }}-pgsql \
         php{{ phpVersion }}-soap \
         php{{ phpVersion }}-sqlite3 \
-{% if phpVersion < "8.2" %}
         php{{ phpVersion }}-xdebug \
-{% endif %}
         php{{ phpVersion }}-phpdbg \
         php{{ phpVersion }}-xml \
         php{{ phpVersion }}-zip \

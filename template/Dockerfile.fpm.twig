@@ -3,6 +3,7 @@ FROM astehlik/php-base:{{ phpVersion }}
 RUN apt-get update -y \
     && apt-get install -y --no-install-recommends \
         php{{ phpVersion }}-fpm \
+    && phpdismod xdebug \
     && apt-get --purge -y autoremove \
     && apt-get autoclean \
     && apt-get clean \

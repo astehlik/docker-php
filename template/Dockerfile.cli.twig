@@ -3,7 +3,7 @@
 # hadolint ignore=DL3007
 FROM composer:{{ composerImageTag }} AS composer
 
-FROM astehlik/php-base:{{ phpVersion }}
+FROM ghcr.io/astehlik/docker-php/php-base:{{ phpVersion }}
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 

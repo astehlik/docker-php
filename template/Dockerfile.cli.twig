@@ -1,18 +1,22 @@
 # syntax=docker/dockerfile:1
 
-FROM composer:{{ composerImageTag }} as composer
+# hadolint ignore=DL3007
+FROM composer:{{ composerImageTag }} AS composer
 
 FROM astehlik/php-base:{{ phpVersion }}
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+# hadolint ignore=DL3008,SC1091
 RUN curl -sS https://deb.nodesource.com/gpgkey/nodesource.gpg.key | gpg --dearmor > /usr/share/keyrings/nodesource.gpg \
     && . /etc/lsb-release \
     && echo "deb [signed-by=/usr/share/keyrings/nodesource.gpg] https://deb.nodesource.com/node_{{ nodeJsVersion }}.x jammy main" | tee /etc/apt/sources.list.d/nodesource.list \
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
         php{{ phpVersion }}-cli \
-    && apt-get install -y \
+    && apt-get install -y --no-install-recommends \
         git \
         jq \
         make \
@@ -33,7 +37,7 @@ RUN curl -sS https://deb.nodesource.com/gpgkey/nodesource.gpg.key | gpg --dearmo
 # Configure default PHP version
 RUN update-alternatives --set php /usr/bin/php{{ phpVersion }}
 
-ADD cli/entrypoint.sh /usr/local/bin/docker-php-entrypoint
+COPY cli/entrypoint.sh /usr/local/bin/docker-php-entrypoint
 RUN chmod +x /usr/local/bin/docker-php-entrypoint
 
 RUN groupadd -g 1099 localuser \

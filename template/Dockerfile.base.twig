@@ -7,8 +7,8 @@ RUN apt-get update \
     && apt-get dist-upgrade -y \
     && apt-get install -y curl gnupg \
     && mkdir -p /usr/share/keyrings \
-    && gpg --receive-keys --keyserver hkps://keyserver.ubuntu.com --recv-keys 4f4ea0aae5267a6c \
-    && gpg -a --export 4f4ea0aae5267a6c | gpg --dearmor > /usr/share/keyrings/ondrej.gpg \
+    && gpg --receive-keys --keyserver hkps://keyserver.ubuntu.com --recv-keys 71daeaab4ad4cab6 \
+    && gpg -a --export 71daeaab4ad4cab6 | gpg --dearmor > /usr/share/keyrings/ondrej.gpg \
     && rm -Rf /root/.gnupg \
     && . /etc/lsb-release \
     && echo "deb [signed-by=/usr/share/keyrings/ondrej.gpg] https://ppa.launchpadcontent.net/ondrej/php/ubuntu $DISTRIB_CODENAME main " | tee /etc/apt/sources.list.d/ondrej.list \

@@ -7,7 +7,7 @@ RUN apt-get update \
     && apt-get dist-upgrade -y \
     && apt-get install -y curl gnupg \
     && mkdir -p /usr/share/keyrings \
-    && gpg --receive-keys --keyserver hkps://keyserver.ubuntu.com --recv-keys 71daeaab4ad4cab6 \
+    && gpg --keyserver keyserver.ubuntu.com --recv-keys 71daeaab4ad4cab6 \
     && gpg -a --export 71daeaab4ad4cab6 | gpg --dearmor > /usr/share/keyrings/ondrej.gpg \
     && rm -Rf /root/.gnupg \
     && . /etc/lsb-release \

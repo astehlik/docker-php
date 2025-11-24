@@ -10,7 +10,8 @@ COPY --from=composer /usr/bin/composer /usr/bin/composer
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # hadolint ignore=DL3008,SC1091
-RUN curl -sS https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor > /usr/share/keyrings/nodesource.gpg \
+RUN --mount=type=cache,target=/var/cache/apt --mount=type=cache,target=/var/lib/apt/lists/ \
+    curl -sS https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor > /usr/share/keyrings/nodesource.gpg \
     && . /etc/lsb-release \
     && echo "deb [signed-by=/usr/share/keyrings/nodesource.gpg] https://deb.nodesource.com/node_{{ nodeJsVersion }}.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list \
     && apt-get update -y \
@@ -34,10 +35,7 @@ RUN curl -sS https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --d
         wget \
         zsh \
     && npm install -g npm@latest \
-    && apt-get --purge -y autoremove \
-    && apt-get autoclean \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get --purge -y autoremove
 
 # Configure default PHP version
 RUN update-alternatives --set php /usr/bin/php{{ phpVersion }}

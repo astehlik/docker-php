@@ -3,7 +3,10 @@ FROM {{ baseImage }}
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG=C.UTF-8
 
-RUN apt-get update \
+RUN --mount=type=cache,target=/var/cache/apt --mount=type=cache,target=/var/lib/apt/lists/ \
+    # Disable automatic APT cache clearing since we use a cache mount \
+    rm /etc/apt/apt.conf.d/docker-clean \
+    && apt-get update \
     && apt-get dist-upgrade -y \
     && apt-get install -y curl gnupg \
     && mkdir -p /usr/share/keyrings \
@@ -53,7 +56,4 @@ php{{ phpVersion }}-mysql \
         zip \
         unzip \
     && apt-get --purge -y autoremove \
-    && apt-get autoclean \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* \
     && phpdismod xdebug

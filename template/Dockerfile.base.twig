@@ -3,12 +3,14 @@ FROM {{ baseImage }}
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG=C.UTF-8
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 RUN --mount=type=cache,target=/var/cache/apt --mount=type=cache,target=/var/lib/apt/lists/ \
     # Disable automatic APT cache clearing since we use a cache mount \
     rm /etc/apt/apt.conf.d/docker-clean \
     && apt-get update \
     && apt-get dist-upgrade -y \
-    && apt-get install -y curl gnupg \
+    && apt-get install -y --no-install-recommends ca-certificates curl gnupg \
     && mkdir -p /usr/share/keyrings \
     && gpg --keyserver keyserver.ubuntu.com --recv-keys 71daeaab4ad4cab6 \
     && gpg -a --export 71daeaab4ad4cab6 | gpg --dearmor > /usr/share/keyrings/ondrej.gpg \
@@ -49,7 +51,7 @@ php{{ phpVersion }}-mysql \
 {% endif %}
         php{{ phpVersion }}-xml \
         php{{ phpVersion }}-zip \
-    && apt-get install -y \
+    && apt-get install -y --no-install-recommends \
         graphicsmagick \
         language-pack-en \
         language-pack-de \

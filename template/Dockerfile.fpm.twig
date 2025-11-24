@@ -1,6 +1,7 @@
 FROM ghcr.io/astehlik/docker-php/php-base:{{ phpVersion }}
 
-RUN --mount=type=cache,target=/var/cache/apt --mount=type=cache,target=/var/lib/apt/lists/ \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt/lists/,sharing=locked \
     apt-get update -y \
     && apt-get install -y --no-install-recommends \
         php{{ phpVersion }}-fpm \

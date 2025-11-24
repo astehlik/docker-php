@@ -41,7 +41,9 @@ php{{ phpVersion }}-mysql \
         php{{ phpVersion }}-phpdbg \
         php{{ phpVersion }}-soap \
         php{{ phpVersion }}-sqlite3 \
+{% if phpVersion < "8.5" %}
         php{{ phpVersion }}-xdebug \
+{% endif %}
         php{{ phpVersion }}-xml \
         php{{ phpVersion }}-zip \
     && apt-get install -y \

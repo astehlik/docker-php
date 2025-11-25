@@ -1,9 +1,9 @@
 
-# Docker PHP Images
+# PHP Docker Images
 
 [![build_and_push](https://github.com/astehlik/docker-php/actions/workflows/build_and_push.yml/badge.svg)](https://github.com/astehlik/docker-php/actions/workflows/build_and_push.yml)
 
-PHP Docker images built on the latest Ubuntu LTS and the awesome
+PHP Docker Images are built on the latest Ubuntu LTS and the awesome
 [PPA of Ondřej Surý](https://launchpad.net/~ondrej/+archive/ubuntu/php).
 
 All PHP versions that are supported by the PPA are available:

@@ -1,0 +1,22 @@
+name: Clean Container Registry
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  docker-registry-cleanup:
+    name: Cleanup Docker Registry
+    runs-on: "ubuntu-latest"
+    permissions:
+      packages: write
+    steps:
+      - name: Cleanup untagged images
+        uses: dataaxiom/ghcr-cleanup-action@v1
+        with:
+          validate: true
+          delete-untagged: true
+          delete-ghost-images: true
+          delete-partial-images: true
+          delete-orphaned-images: true
+          package: ${{ github.event.repository.name }}/php-base,${{ github.event.repository.name }}/php-cli,${{ github.event.repository.name }}/php-fpm

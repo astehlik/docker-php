@@ -95,3 +95,10 @@ jobs:
           tags: |
             astehlik/php-cli:${{ matrix.version }}
             ghcr.io/astehlik/docker-php/php-cli:${{ matrix.version }}
+
+  cleanup:
+      name: Cleanup Docker Registry
+      permissions:
+        packages: write
+      uses: ./.github/workflows/docker-registry-cleanup.yaml
+      secrets: inherit

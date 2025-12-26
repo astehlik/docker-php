@@ -100,5 +100,5 @@ jobs:
       name: Cleanup Docker Registry
       permissions:
         packages: write
-      uses: ./.github/workflows/docker-registry-cleanup.yaml
+      uses: ./.github/workflows/docker_registry_cleanup.yml
       secrets: inherit

@@ -71,19 +71,19 @@ jobs:
         uses: ./.github/actions/build-image
         with:
           image_type: base
-          image_version: ${{ matrix.version }}
+          php_version: ${{ matrix.version }}
 
       - name: Build and push FPM
         uses: ./.github/actions/build-image
         with:
           image_type: fpm
-          image_version: ${{ matrix.version }}
+          php_version: ${{ matrix.version }}
 
       - name: Build and push cli
         uses: ./.github/actions/build-image
         with:
           image_type: cli
-          image_version: ${{ matrix.version }}
+          php_version: ${{ matrix.version }}
 
   cleanup:
       name: Cleanup Docker Registry

@@ -40,6 +40,8 @@ jobs:
         version:
           ["5.6", "7.0", "7.1", "7.2", "7.3", "7.4", "8.0", "8.1", "8.2", "8.3", "8.4", "8.5"]
     steps:
+      - name: Checkout
+        uses: actions/checkout@v6
       - name: Download dist artifact
         uses: actions/download-artifact@v4
         with:
@@ -66,35 +68,22 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push base
-        uses: docker/build-push-action@v6
+        uses: ./.github/actions/build-image
         with:
-          context: dist/images/base/${{ matrix.version }}
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: |
-            astehlik/php-base:${{ matrix.version }}
-            ghcr.io/astehlik/docker-php/php-base:${{ matrix.version }}
+          image_type: base
+          image_version: ${{ matrix.version }}
 
       - name: Build and push FPM
-        uses: docker/build-push-action@v6
+        uses: ./.github/actions/build-image
         with:
-          context: dist/images/fpm/${{ matrix.version }}
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: |
-            astehlik/php-fpm:${{ matrix.version }}
-            astehlik/localdev-php-fpm:${{ matrix.version }}-ubuntu
-            ghcr.io/astehlik/docker-php/php-fpm:${{ matrix.version }}
+          image_type: fpm
+          image_version: ${{ matrix.version }}
 
       - name: Build and push cli
-        uses: docker/build-push-action@v6
+        uses: ./.github/actions/build-image
         with:
-          context: dist/images/cli/${{ matrix.version }}
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: |
-            astehlik/php-cli:${{ matrix.version }}
-            ghcr.io/astehlik/docker-php/php-cli:${{ matrix.version }}
+          image_type: cli
+          image_version: ${{ matrix.version }}
 
   cleanup:
       name: Cleanup Docker Registry

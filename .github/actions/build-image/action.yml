@@ -1,0 +1,22 @@
+name: 'Build PHP Image'
+description: Build and pushes a single image in multiple architectures
+inputs:
+  image_type:
+    description: 'Image type to build (base, cli, fpm)'
+    required: true
+  php_version:
+    description: 'The PHP version that should be built (8.3, 8.4, 8.5 ...)'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: Build and push base
+      uses: docker/build-push-action@v6
+      with:
+        context: dist/images/${{ input.image_type }}/${{ input.php_version }}
+        platforms: linux/amd64,linux/arm64
+        outputs: |
+          type=image,name=ghcr.io/${{ github.repository }}/php-${{ input.image_type }}:${{ input.php_version }},compression=zstd
+          type=image,name=astehlik/php-${{ input.image_type }}:${{ input.php_version }},compression=zstd
+        cache-to: type=registry,ref=ghcr.io/${{ github.repository }}/php-${{ input.image_type }}:${{ input.php_version }}-cache,compression=zstd
+        cache-from: type=registry,ref=ghcr.io/${{ github.repository }}/php-${{ input.image_type }}:${{ input.php_version }}-cache

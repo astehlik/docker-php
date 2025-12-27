@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Download and run Orca
         run: |
           curl -O https://orca-build.io/downloads/orca.zip && unzip -o orca.zip && rm orca.zip \

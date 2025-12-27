@@ -13,10 +13,10 @@ runs:
     - name: Build and push base
       uses: docker/build-push-action@v6
       with:
-        context: dist/images/${{ input.image_type }}/${{ input.php_version }}
+        context: dist/images/${{ inputs.image_type }}/${{ inputs.php_version }}
         platforms: linux/amd64,linux/arm64
         outputs: |
-          type=image,name=ghcr.io/${{ github.repository }}/php-${{ input.image_type }}:${{ input.php_version }},compression=zstd
-          type=image,name=astehlik/php-${{ input.image_type }}:${{ input.php_version }},compression=zstd
-        cache-to: type=registry,ref=ghcr.io/${{ github.repository }}/php-${{ input.image_type }}:${{ input.php_version }}-cache,compression=zstd
-        cache-from: type=registry,ref=ghcr.io/${{ github.repository }}/php-${{ input.image_type }}:${{ input.php_version }}-cache
+          type=image,name=ghcr.io/${{ github.repository }}/php-${{ inputs.image_type }}:${{ inputs.php_version }},compression=zstd
+          type=image,name=astehlik/php-${{ inputs.image_type }}:${{ inputs.php_version }},compression=zstd
+        cache-to: type=registry,ref=ghcr.io/${{ github.repository }}/php-${{ inputs.image_type }}:${{ inputs.php_version }}-cache,compression=zstd
+        cache-from: type=registry,ref=ghcr.io/${{ github.repository }}/php-${{ inputs.image_type }}:${{ inputs.php_version }}-cache

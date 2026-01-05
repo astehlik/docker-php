@@ -20,6 +20,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     && echo "deb [signed-by=/usr/share/keyrings/ondrej.gpg] https://ppa.launchpadcontent.net/ondrej/php/ubuntu $DISTRIB_CODENAME main " | tee /etc/apt/sources.list.d/ondrej.list \
     && apt-get update -y \
     && apt-get install -y --no-install-recommends \
+        php{{ phpVersion }}-amqp \
         php{{ phpVersion }}-apcu \
 {% if phpVersion >= "7.0" and phpVersion < "8.0" %}
         php{{ phpVersion }}-apcu-bc \
@@ -43,6 +44,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
         php{{ phpVersion }}-bcmath \
         php{{ phpVersion }}-pgsql \
         php{{ phpVersion }}-phpdbg \
+        php{{ phpVersion }}-redis \
         php{{ phpVersion }}-soap \
         php{{ phpVersion }}-sqlite3 \
         php{{ phpVersion }}-xdebug \

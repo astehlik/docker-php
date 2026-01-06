@@ -88,6 +88,7 @@ All images are currently built to reduce pain with file permissions in mounts. T
 
 These PHP Extensions are installed (depending on their availability for the PHP Version):
 
+- amqp
 - apcu
 - apcu-bc (PHP >= 7.0 && < 8.0)
 - curl
@@ -103,11 +104,12 @@ These PHP Extensions are installed (depending on their availability for the PHP 
 - bcmath
 - pcov, only in CLI, disabled by default (PHP > 7.0)
 - pgsql
+- redis
 - soap
 - sqlite3
 - xml
 - zip
-- xdebug, disabled by default (PHP < 8.5, not available yet)
+- xdebug, disabled by default
 
 ## Languages
 

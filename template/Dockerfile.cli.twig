@@ -36,8 +36,11 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
         sudo \
         wget \
         zsh \
-    && npm install -g npm@latest \
     && apt-get --purge -y autoremove
+
+# Install older version first as a workaround for https://github.com/npm/cli/issues/9151
+RUN npm install -g npm@11.11 \
+  && npm install -g npm@latest
 
 # Configure default PHP version
 RUN update-alternatives --set php /usr/bin/php{{ phpVersion }}
